@@ -20,25 +20,16 @@ map:database a d2rq:Database;
 map:building_comments a d2rq:ClassMap;
 	d2rq:dataStorage map:database;
 	d2rq:uriPattern "building_comments/@@building_comments.id@@";
-	d2rq:class vocab:building_comments;
-	d2rq:classDefinitionLabel "building_comments";
+	d2rq:class sioc:Post;
 	.
 map:building_comments__label a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:building_comments;
 	d2rq:property rdfs:label;
 	d2rq:pattern "building_comments #@@building_comments.id@@";
 	.
-map:building_comments_id a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:building_comments;
-	d2rq:property vocab:building_comments_id;
-	d2rq:propertyDefinitionLabel "building_comments id";
-	d2rq:column "building_comments.id";
-	d2rq:datatype xsd:integer;
-	.
 map:building_comments_comment a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:building_comments;
-	d2rq:property vocab:building_comments_comment;
-	d2rq:propertyDefinitionLabel "building_comments comment";
+	d2rq:property sioc:content;
 	d2rq:column "building_comments.comment";
 	.
 map:building_comments_note a d2rq:PropertyBridge;
@@ -93,59 +84,6 @@ map:building_type_type_denom_en a d2rq:PropertyBridge;
 	d2rq:column "building_type.type_denom_en";
 	.
 
-# Table classes
-map:classes a d2rq:ClassMap;
-	d2rq:dataStorage map:database;
-	d2rq:uriPattern "classes/@@classes.id@@";
-	d2rq:class vocab:classes;
-	d2rq:classDefinitionLabel "classes";
-	.
-map:classes__label a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:classes;
-	d2rq:property rdfs:label;
-	d2rq:pattern "classes #@@classes.id@@";
-	.
-map:classes_id a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:classes;
-	d2rq:property vocab:classes_id;
-	d2rq:propertyDefinitionLabel "classes id";
-	d2rq:column "classes.id";
-	d2rq:datatype xsd:integer;
-	.
-map:classes_type_id a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:classes;
-	d2rq:property vocab:classes_type_id;
-	d2rq:propertyDefinitionLabel "classes type_id";
-	d2rq:column "classes.type_id";
-	d2rq:datatype xsd:integer;
-	.
-map:classes_name a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:classes;
-	d2rq:property vocab:classes_name;
-	d2rq:propertyDefinitionLabel "classes name";
-	d2rq:column "classes.name";
-	.
-map:classes_cost a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:classes;
-	d2rq:property vocab:classes_cost;
-	d2rq:propertyDefinitionLabel "classes cost";
-	d2rq:column "classes.cost";
-	d2rq:datatype xsd:double;
-	.
-map:classes_priority a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:classes;
-	d2rq:property vocab:classes_priority;
-	d2rq:propertyDefinitionLabel "classes priority";
-	d2rq:column "classes.priority";
-	d2rq:datatype xsd:double;
-	.
-map:classes_default_maxspeed a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:classes;
-	d2rq:property vocab:classes_default_maxspeed;
-	d2rq:propertyDefinitionLabel "classes default_maxspeed";
-	d2rq:column "classes.default_maxspeed";
-	d2rq:datatype xsd:integer;
-	.
 
 # Table emblematic_building
 map:emblematic_building a d2rq:ClassMap;
@@ -329,6 +267,14 @@ map:event_type_id__ref a d2rq:PropertyBridge;
 	d2rq:property vocab:event_type_id;
 	d2rq:refersToClassMap map:event_subtype;
 	d2rq:join "event.type_id => event_subtype.id";
+	.
+map:locationGeom a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property d2rq:locationGeom;
+	d2rq:column "location.geom";
+	d2rq:join "event.id<=event_location.event_id";
+	d2rq:join "event_location.location_id => location.id";
+	d2rq:datatype xsd:string;
 	.
 
 # Table event_location
@@ -564,25 +510,16 @@ map:hostelery_hostelery_type__ref a d2rq:PropertyBridge;
 map:hostelery_comments a d2rq:ClassMap;
 	d2rq:dataStorage map:database;
 	d2rq:uriPattern "hostelery_comments/@@hostelery_comments.id@@";
-	d2rq:class vocab:hostelery_comments;
-	d2rq:classDefinitionLabel "hostelery_comments";
+	d2rq:class sioc:Post;
 	.
 map:hostelery_comments__label a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery_comments;
 	d2rq:property rdfs:label;
 	d2rq:pattern "hostelery_comments #@@hostelery_comments.id@@";
 	.
-map:hostelery_comments_id a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:hostelery_comments;
-	d2rq:property vocab:hostelery_comments_id;
-	d2rq:propertyDefinitionLabel "hostelery_comments id";
-	d2rq:column "hostelery_comments.id";
-	d2rq:datatype xsd:integer;
-	.
 map:hostelery_comments_comment a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery_comments;
-	d2rq:property vocab:hostelery_comments_comment;
-	d2rq:propertyDefinitionLabel "hostelery_comments comment";
+	d2rq:property sioc:content;
 	d2rq:column "hostelery_comments.comment";
 	.
 map:hostelery_comments_note a d2rq:PropertyBridge;
