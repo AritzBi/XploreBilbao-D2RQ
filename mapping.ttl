@@ -8,6 +8,7 @@
 @prefix jdbc: <http://d2rq.org/terms/jdbc/> .
 @prefix event: <http://linkedevents.org/ontology/>.
 @prefix sioc: <http://rdfs.org/sioc/spec/>.
+@prefix ogc: <http://www.opengis.net/ont/geosparql#> .
 
 map:database a d2rq:Database;
 	d2rq:jdbcDriver "org.postgresql.Driver";
@@ -270,12 +271,20 @@ map:event_type_id__ref a d2rq:PropertyBridge;
 	.
 map:locationGeom a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
-	d2rq:property d2rq:locationGeom;
-	d2rq:column "location.geom";
+	d2rq:property event:inSpace;
 	d2rq:join "event.id<=event_location.event_id";
 	d2rq:join "event_location.location_id => location.id";
-	d2rq:datatype xsd:string;
+	d2rq:sqlExpression "ST_AsEWKT(location.geom)";
+	d2rq:datatype ogc:wktLiteral;
 	.
+map:locationDenom a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property event:atPlace;
+	d2rq:join "event.id<=event_location.event_id";
+	d2rq:column "event_location.denom";
+	.
+
+
 
 # Table event_location
 map:event_location a d2rq:ClassMap;
