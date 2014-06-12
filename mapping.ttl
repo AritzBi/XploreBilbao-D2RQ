@@ -231,32 +231,6 @@ map:event_information_url a d2rq:PropertyBridge;
 	d2rq:propertyDefinitionLabel "event information_url";
 	d2rq:column "event.information_url";
 	.
-map:event_startdate a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event;
-	d2rq:property vocab:event_startdate;
-	d2rq:propertyDefinitionLabel "event startdate";
-	d2rq:column "event.startdate";
-	d2rq:datatype xsd:date;
-	.
-map:event_endate a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event;
-	d2rq:property vocab:event_endate;
-	d2rq:propertyDefinitionLabel "event endate";
-	d2rq:column "event.endate";
-	d2rq:datatype xsd:date;
-	.
-map:event_starthour a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event;
-	d2rq:property vocab:event_starthour;
-	d2rq:propertyDefinitionLabel "event starthour";
-	d2rq:column "event.starthour";
-	.
-map:event_endhour a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event;
-	d2rq:property vocab:event_endhour;
-	d2rq:propertyDefinitionLabel "event endhour";
-	d2rq:column "event.endhour";
-	.
 map:event_price a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
 	d2rq:property vocab:event_price;
@@ -283,39 +257,19 @@ map:locationDenom a d2rq:PropertyBridge;
 	d2rq:join "event.id<=event_location.event_id";
 	d2rq:column "event_location.denom";
 	.
+map:atTime a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property event:atTime;
+	d2rq:pattern "@@event.starthour@@-@@event.endhour@@";
+	.
+map:circa a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property event:circa;
+	d2rq:pattern "@@event.startdate@@/@@event.endate@@";
+	.
 
 
 
-# Table event_location
-map:event_location a d2rq:ClassMap;
-	d2rq:dataStorage map:database;
-	d2rq:uriPattern "event_location/@@event_location.location_id@@/@@event_location.event_id@@";
-	d2rq:class vocab:event_location;
-	d2rq:classDefinitionLabel "event_location";
-	.
-map:event_location__label a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event_location;
-	d2rq:property rdfs:label;
-	d2rq:pattern "event_location #@@event_location.location_id@@/@@event_location.event_id@@";
-	.
-map:event_location_denom a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event_location;
-	d2rq:property vocab:event_location_denom;
-	d2rq:propertyDefinitionLabel "event_location denom";
-	d2rq:column "event_location.denom";
-	.
-map:event_location_event_id__ref a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event_location;
-	d2rq:property vocab:event_location_event_id;
-	d2rq:refersToClassMap map:event;
-	d2rq:join "event_location.event_id => event.id";
-	.
-map:event_location_location_id__ref a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event_location;
-	d2rq:property vocab:event_location_location_id;
-	d2rq:refersToClassMap map:location;
-	d2rq:join "event_location.location_id => location.id";
-	.
 
 # Table event_subtype
 map:event_subtype a d2rq:ClassMap;
