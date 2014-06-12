@@ -1,0 +1,768 @@
+@prefix map: <#> .
+@prefix db: <> .
+@prefix vocab: <vocab/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix event: <http://linkedevents.org/ontology/>.
+@prefix sioc: <http://rdfs.org/sioc/spec/>.
+
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.postgresql.Driver";
+	d2rq:jdbcDSN "jdbc:postgresql:mydb";
+	d2rq:username "doctor";
+	d2rq:password "who";
+	.
+
+# Table building_comments
+map:building_comments a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "building_comments/@@building_comments.id@@";
+	d2rq:class vocab:building_comments;
+	d2rq:classDefinitionLabel "building_comments";
+	.
+map:building_comments__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:building_comments;
+	d2rq:property rdfs:label;
+	d2rq:pattern "building_comments #@@building_comments.id@@";
+	.
+map:building_comments_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:building_comments;
+	d2rq:property vocab:building_comments_id;
+	d2rq:propertyDefinitionLabel "building_comments id";
+	d2rq:column "building_comments.id";
+	d2rq:datatype xsd:integer;
+	.
+map:building_comments_comment a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:building_comments;
+	d2rq:property vocab:building_comments_comment;
+	d2rq:propertyDefinitionLabel "building_comments comment";
+	d2rq:column "building_comments.comment";
+	.
+map:building_comments_note a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:building_comments;
+	d2rq:property vocab:building_comments_note;
+	d2rq:propertyDefinitionLabel "building_comments note";
+	d2rq:column "building_comments.note";
+	d2rq:datatype xsd:double;
+	.
+map:building_comments_building_id__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:building_comments;
+	d2rq:property vocab:building_comments_building_id;
+	d2rq:refersToClassMap map:emblematic_building;
+	d2rq:join "building_comments.building_id => emblematic_building.id";
+	.
+
+
+# Table building_type
+map:building_type a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "building_type/@@building_type.id@@";
+	d2rq:class rdfs:Class;
+	.
+map:building_type__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:building_type;
+	d2rq:property rdfs:label;
+	d2rq:pattern "building_type #@@building_type.id@@";
+	.
+map:building_type_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:building_type;
+	d2rq:property vocab:building_type_id;
+	d2rq:propertyDefinitionLabel "building_type id";
+	d2rq:column "building_type.id";
+	d2rq:datatype xsd:integer;
+	.
+map:building_type_type_denom_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:building_type;
+	d2rq:property rdf:label;
+	d2rq:lang "en";
+	d2rq:column "building_type.type_denom_es";
+	.
+map:building_type_type_denom_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:building_type;
+	d2rq:property rdf:label;
+	d2rq:lang "eu";
+	d2rq:column "building_type.type_denom_eu";
+	.
+map:building_type_type_denom_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:building_type;
+	d2rq:property rdf:label;
+	d2rq:lang "en";
+	d2rq:column "building_type.type_denom_en";
+	.
+
+# Table classes
+map:classes a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "classes/@@classes.id@@";
+	d2rq:class vocab:classes;
+	d2rq:classDefinitionLabel "classes";
+	.
+map:classes__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property rdfs:label;
+	d2rq:pattern "classes #@@classes.id@@";
+	.
+map:classes_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property vocab:classes_id;
+	d2rq:propertyDefinitionLabel "classes id";
+	d2rq:column "classes.id";
+	d2rq:datatype xsd:integer;
+	.
+map:classes_type_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property vocab:classes_type_id;
+	d2rq:propertyDefinitionLabel "classes type_id";
+	d2rq:column "classes.type_id";
+	d2rq:datatype xsd:integer;
+	.
+map:classes_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property vocab:classes_name;
+	d2rq:propertyDefinitionLabel "classes name";
+	d2rq:column "classes.name";
+	.
+map:classes_cost a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property vocab:classes_cost;
+	d2rq:propertyDefinitionLabel "classes cost";
+	d2rq:column "classes.cost";
+	d2rq:datatype xsd:double;
+	.
+map:classes_priority a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property vocab:classes_priority;
+	d2rq:propertyDefinitionLabel "classes priority";
+	d2rq:column "classes.priority";
+	d2rq:datatype xsd:double;
+	.
+map:classes_default_maxspeed a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property vocab:classes_default_maxspeed;
+	d2rq:propertyDefinitionLabel "classes default_maxspeed";
+	d2rq:column "classes.default_maxspeed";
+	d2rq:datatype xsd:integer;
+	.
+
+# Table emblematic_building
+map:emblematic_building a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "emblematic_building/@@emblematic_building.id@@";
+	d2rq:class vocab:emblematic_building;
+	d2rq:classDefinitionLabel "emblematic_building";
+	.
+map:emblematic_building__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property rdfs:label;
+	d2rq:pattern "emblematic_building #@@emblematic_building.id@@";
+	.
+map:emblematic_building_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property vocab:emblematic_building_id;
+	d2rq:propertyDefinitionLabel "emblematic_building id";
+	d2rq:column "emblematic_building.id";
+	d2rq:datatype xsd:integer;
+	.
+map:emblematic_building_denom_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property rdf:label;
+	d2rq:lang "es";
+	d2rq:column "emblematic_building.denom_es";
+	.
+map:emblematic_building_denom_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property rdf:label;
+	d2rq:lang "eu";
+	d2rq:column "emblematic_building.denom_eu";
+	.
+map:emblematic_building_denom_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property rdf:label;
+	d2rq:lang "en";
+	d2rq:column "emblematic_building.denom_en";
+	.
+map:emblematic_building_description_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property vocab:emblematic_building_description_es;
+	d2rq:propertyDefinitionLabel "emblematic_building description_es";
+	d2rq:column "emblematic_building.description_es";
+	.
+map:emblematic_building_description_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property vocab:emblematic_building_description_eu;
+	d2rq:propertyDefinitionLabel "emblematic_building description_eu";
+	d2rq:column "emblematic_building.description_eu";
+	.
+map:emblematic_building_description_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property vocab:emblematic_building_description_en;
+	d2rq:propertyDefinitionLabel "emblematic_building description_en";
+	d2rq:column "emblematic_building.description_en";
+	.
+map:emblematic_building_information_url a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property vocab:emblematic_building_information_url;
+	d2rq:propertyDefinitionLabel "emblematic_building information_url";
+	d2rq:column "emblematic_building.information_url";
+	.
+map:emblematic_building_information_url_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property vocab:emblematic_building_information_url_en;
+	d2rq:propertyDefinitionLabel "emblematic_building information_url_en";
+	d2rq:column "emblematic_building.information_url_en";
+	.
+map:emblematic_building_information_url_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property vocab:emblematic_building_information_url_eu;
+	d2rq:propertyDefinitionLabel "emblematic_building information_url_eu";
+	d2rq:column "emblematic_building.information_url_eu";
+	.
+map:emblematic_building_image_path a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property vocab:emblematic_building_image_path;
+	d2rq:propertyDefinitionLabel "emblematic_building image_path";
+	d2rq:column "emblematic_building.image_path";
+	.
+map:emblematic_building_location_id__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property vocab:emblematic_building_location_id;
+	d2rq:refersToClassMap map:location;
+	d2rq:join "emblematic_building.location_id => location.id";
+	.
+map:emblematic_building_building_type__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:building_type;
+	d2rq:join "emblematic_building.building_type => building_type.id";
+	.
+
+# Table event
+map:event a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "event/@@event.id@@";
+	d2rq:class event:Event;
+	.
+map:event__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property rdfs:label;
+	d2rq:pattern "event #@@event.id@@";
+	.
+map:event_title_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property rdf:label;
+	d2rq:lang "es";
+	d2rq:column "event.title_es";
+	.
+map:event_title_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property rdf:label;
+	d2rq:lang "en";
+	d2rq:column "event.title_en";
+	.
+map:event_title_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property rdf:label;
+	d2rq:lang "eu";
+	d2rq:column "event.title_eu";
+	.
+map:event_more_information_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property sioc:content;
+	d2rq:lang "es";
+	d2rq:column "event.more_information_es";
+	.
+map:event_more_information_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property sioc:content;
+	d2rq:lang "en";
+	d2rq:column "event.more_information_en";
+	.
+map:event_more_information_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property sioc:content;
+	d2rq:lang "eu";
+	d2rq:column "event.more_information_eu";
+	.
+map:event_information_url a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property vocab:event_information_url;
+	d2rq:propertyDefinitionLabel "event information_url";
+	d2rq:column "event.information_url";
+	.
+map:event_startdate a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property vocab:event_startdate;
+	d2rq:propertyDefinitionLabel "event startdate";
+	d2rq:column "event.startdate";
+	d2rq:datatype xsd:date;
+	.
+map:event_endate a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property vocab:event_endate;
+	d2rq:propertyDefinitionLabel "event endate";
+	d2rq:column "event.endate";
+	d2rq:datatype xsd:date;
+	.
+map:event_starthour a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property vocab:event_starthour;
+	d2rq:propertyDefinitionLabel "event starthour";
+	d2rq:column "event.starthour";
+	.
+map:event_endhour a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property vocab:event_endhour;
+	d2rq:propertyDefinitionLabel "event endhour";
+	d2rq:column "event.endhour";
+	.
+map:event_price a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property vocab:event_price;
+	d2rq:propertyDefinitionLabel "event price";
+	d2rq:column "event.price";
+	.
+map:event_type_id__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property vocab:event_type_id;
+	d2rq:refersToClassMap map:event_subtype;
+	d2rq:join "event.type_id => event_subtype.id";
+	.
+
+# Table event_location
+map:event_location a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "event_location/@@event_location.location_id@@/@@event_location.event_id@@";
+	d2rq:class vocab:event_location;
+	d2rq:classDefinitionLabel "event_location";
+	.
+map:event_location__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_location;
+	d2rq:property rdfs:label;
+	d2rq:pattern "event_location #@@event_location.location_id@@/@@event_location.event_id@@";
+	.
+map:event_location_denom a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_location;
+	d2rq:property vocab:event_location_denom;
+	d2rq:propertyDefinitionLabel "event_location denom";
+	d2rq:column "event_location.denom";
+	.
+map:event_location_event_id__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_location;
+	d2rq:property vocab:event_location_event_id;
+	d2rq:refersToClassMap map:event;
+	d2rq:join "event_location.event_id => event.id";
+	.
+map:event_location_location_id__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_location;
+	d2rq:property vocab:event_location_location_id;
+	d2rq:refersToClassMap map:location;
+	d2rq:join "event_location.location_id => location.id";
+	.
+
+# Table event_subtype
+map:event_subtype a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "event_subtype/@@event_subtype.id@@";
+	d2rq:class vocab:event_subtype;
+	d2rq:classDefinitionLabel "event_subtype";
+	.
+map:event_subtype__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_subtype;
+	d2rq:property rdfs:label;
+	d2rq:pattern "event_subtype #@@event_subtype.id@@";
+	.
+map:event_subtype_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_subtype;
+	d2rq:property vocab:event_subtype_id;
+	d2rq:propertyDefinitionLabel "event_subtype id";
+	d2rq:column "event_subtype.id";
+	d2rq:datatype xsd:integer;
+	.
+map:event_subtype_subtype_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_subtype;
+	d2rq:property vocab:event_subtype_subtype_es;
+	d2rq:propertyDefinitionLabel "event_subtype subtype_es";
+	d2rq:column "event_subtype.subtype_es";
+	.
+map:event_subtype_subtype_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_subtype;
+	d2rq:property vocab:event_subtype_subtype_en;
+	d2rq:propertyDefinitionLabel "event_subtype subtype_en";
+	d2rq:column "event_subtype.subtype_en";
+	.
+map:event_subtype_subtype_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_subtype;
+	d2rq:property vocab:event_subtype_subtype_eu;
+	d2rq:propertyDefinitionLabel "event_subtype subtype_eu";
+	d2rq:column "event_subtype.subtype_eu";
+	.
+map:event_subtype_type_id__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_subtype;
+	d2rq:property vocab:event_subtype_type_id;
+	d2rq:refersToClassMap map:event_type;
+	d2rq:join "event_subtype.type_id => event_type.id";
+	.
+
+# Table event_type
+map:event_type a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "event_type/@@event_type.id@@";
+	d2rq:class vocab:event_type;
+	d2rq:classDefinitionLabel "event_type";
+	.
+map:event_type__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_type;
+	d2rq:property rdfs:label;
+	d2rq:pattern "event_type #@@event_type.id@@";
+	.
+map:event_type_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_type;
+	d2rq:property vocab:event_type_id;
+	d2rq:propertyDefinitionLabel "event_type id";
+	d2rq:column "event_type.id";
+	d2rq:datatype xsd:integer;
+	.
+map:event_type_type_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_type;
+	d2rq:property vocab:event_type_type_es;
+	d2rq:propertyDefinitionLabel "event_type type_es";
+	d2rq:column "event_type.type_es";
+	.
+map:event_type_type_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_type;
+	d2rq:property vocab:event_type_type_en;
+	d2rq:propertyDefinitionLabel "event_type type_en";
+	d2rq:column "event_type.type_en";
+	.
+map:event_type_type_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_type;
+	d2rq:property vocab:event_type_type_eu;
+	d2rq:propertyDefinitionLabel "event_type type_eu";
+	d2rq:column "event_type.type_eu";
+	.
+
+# Table hostelery
+map:hostelery a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "hostelery/@@hostelery.id@@";
+	d2rq:class vocab:hostelery;
+	d2rq:classDefinitionLabel "hostelery";
+	.
+map:hostelery__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property rdfs:label;
+	d2rq:pattern "hostelery #@@hostelery.id@@";
+	.
+map:hostelery_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_id;
+	d2rq:propertyDefinitionLabel "hostelery id";
+	d2rq:column "hostelery.id";
+	d2rq:datatype xsd:integer;
+	.
+map:hostelery_denom_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_denom_es;
+	d2rq:propertyDefinitionLabel "hostelery denom_es";
+	d2rq:column "hostelery.denom_es";
+	.
+map:hostelery_denom_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_denom_eu;
+	d2rq:propertyDefinitionLabel "hostelery denom_eu";
+	d2rq:column "hostelery.denom_eu";
+	.
+map:hostelery_denom_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_denom_en;
+	d2rq:propertyDefinitionLabel "hostelery denom_en";
+	d2rq:column "hostelery.denom_en";
+	.
+map:hostelery_description_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_description_es;
+	d2rq:propertyDefinitionLabel "hostelery description_es";
+	d2rq:column "hostelery.description_es";
+	.
+map:hostelery_description_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_description_eu;
+	d2rq:propertyDefinitionLabel "hostelery description_eu";
+	d2rq:column "hostelery.description_eu";
+	.
+map:hostelery_description_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_description_en;
+	d2rq:propertyDefinitionLabel "hostelery description_en";
+	d2rq:column "hostelery.description_en";
+	.
+map:hostelery_timetable_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_timetable_es;
+	d2rq:propertyDefinitionLabel "hostelery timetable_es";
+	d2rq:column "hostelery.timetable_es";
+	.
+map:hostelery_timetable_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_timetable_en;
+	d2rq:propertyDefinitionLabel "hostelery timetable_en";
+	d2rq:column "hostelery.timetable_en";
+	.
+map:hostelery_timetable_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_timetable_eu;
+	d2rq:propertyDefinitionLabel "hostelery timetable_eu";
+	d2rq:column "hostelery.timetable_eu";
+	.
+map:hostelery_information_url a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_information_url;
+	d2rq:propertyDefinitionLabel "hostelery information_url";
+	d2rq:column "hostelery.information_url";
+	.
+map:hostelery_source_url a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_source_url;
+	d2rq:propertyDefinitionLabel "hostelery source_url";
+	d2rq:column "hostelery.source_url";
+	.
+map:hostelery_telephone a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_telephone;
+	d2rq:propertyDefinitionLabel "hostelery telephone";
+	d2rq:column "hostelery.telephone";
+	.
+map:hostelery_email a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_email;
+	d2rq:propertyDefinitionLabel "hostelery email";
+	d2rq:column "hostelery.email";
+	.
+map:hostelery_image_path a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_image_path;
+	d2rq:propertyDefinitionLabel "hostelery image_path";
+	d2rq:column "hostelery.image_path";
+	.
+map:hostelery_location_id__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_location_id;
+	d2rq:refersToClassMap map:location;
+	d2rq:join "hostelery.location_id => location.id";
+	.
+map:hostelery_hostelery_type__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property vocab:hostelery_hostelery_type;
+	d2rq:refersToClassMap map:hostelery_type;
+	d2rq:join "hostelery.hostelery_type => hostelery_type.id";
+	.
+
+# Table hostelery_comments
+map:hostelery_comments a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "hostelery_comments/@@hostelery_comments.id@@";
+	d2rq:class vocab:hostelery_comments;
+	d2rq:classDefinitionLabel "hostelery_comments";
+	.
+map:hostelery_comments__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_comments;
+	d2rq:property rdfs:label;
+	d2rq:pattern "hostelery_comments #@@hostelery_comments.id@@";
+	.
+map:hostelery_comments_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_comments;
+	d2rq:property vocab:hostelery_comments_id;
+	d2rq:propertyDefinitionLabel "hostelery_comments id";
+	d2rq:column "hostelery_comments.id";
+	d2rq:datatype xsd:integer;
+	.
+map:hostelery_comments_comment a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_comments;
+	d2rq:property vocab:hostelery_comments_comment;
+	d2rq:propertyDefinitionLabel "hostelery_comments comment";
+	d2rq:column "hostelery_comments.comment";
+	.
+map:hostelery_comments_note a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_comments;
+	d2rq:property vocab:hostelery_comments_note;
+	d2rq:propertyDefinitionLabel "hostelery_comments note";
+	d2rq:column "hostelery_comments.note";
+	d2rq:datatype xsd:double;
+	.
+
+map:hostelery_comments_hostelery_id__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_comments;
+	d2rq:property vocab:hostelery_comments_hostelery_id;
+	d2rq:refersToClassMap map:hostelery;
+	d2rq:join "hostelery_comments.hostelery_id => hostelery.id";
+	.
+
+# Table hostelery_type
+map:hostelery_type a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "hostelery_type/@@hostelery_type.id@@";
+	d2rq:class vocab:hostelery_type;
+	d2rq:classDefinitionLabel "hostelery_type";
+	.
+map:hostelery_type__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_type;
+	d2rq:property rdfs:label;
+	d2rq:pattern "hostelery_type #@@hostelery_type.id@@";
+	.
+map:hostelery_type_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_type;
+	d2rq:property vocab:hostelery_type_id;
+	d2rq:propertyDefinitionLabel "hostelery_type id";
+	d2rq:column "hostelery_type.id";
+	d2rq:datatype xsd:integer;
+	.
+map:hostelery_type_first_type_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_type;
+	d2rq:property vocab:hostelery_type_first_type_es;
+	d2rq:propertyDefinitionLabel "hostelery_type first_type_es";
+	d2rq:column "hostelery_type.first_type_es";
+	.
+map:hostelery_type_second_type_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_type;
+	d2rq:property vocab:hostelery_type_second_type_es;
+	d2rq:propertyDefinitionLabel "hostelery_type second_type_es";
+	d2rq:column "hostelery_type.second_type_es";
+	.
+map:hostelery_type_first_type_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_type;
+	d2rq:property vocab:hostelery_type_first_type_eu;
+	d2rq:propertyDefinitionLabel "hostelery_type first_type_eu";
+	d2rq:column "hostelery_type.first_type_eu";
+	.
+map:hostelery_type_second_type_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_type;
+	d2rq:property vocab:hostelery_type_second_type_eu;
+	d2rq:propertyDefinitionLabel "hostelery_type second_type_eu";
+	d2rq:column "hostelery_type.second_type_eu";
+	.
+map:hostelery_type_first_type_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_type;
+	d2rq:property vocab:hostelery_type_first_type_en;
+	d2rq:propertyDefinitionLabel "hostelery_type first_type_en";
+	d2rq:column "hostelery_type.first_type_en";
+	.
+map:hostelery_type_second_type_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery_type;
+	d2rq:property vocab:hostelery_type_second_type_en;
+	d2rq:propertyDefinitionLabel "hostelery_type second_type_en";
+	d2rq:column "hostelery_type.second_type_en";
+	.
+
+# Table location
+map:location a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "location/@@location.id@@";
+	d2rq:class vocab:location;
+	d2rq:classDefinitionLabel "location";
+	.
+map:location__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property rdfs:label;
+	d2rq:pattern "location #@@location.id@@";
+	.
+map:location_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_id;
+	d2rq:propertyDefinitionLabel "location id";
+	d2rq:column "location.id";
+	d2rq:datatype xsd:integer;
+	.
+map:location_address a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_address;
+	d2rq:propertyDefinitionLabel "location address";
+	d2rq:column "location.address";
+	.
+map:location_geom a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property vocab:location_geom;
+	d2rq:propertyDefinitionLabel "location geom";
+	d2rq:column "location.geom";
+	.
+
+
+
+# Table route
+map:route a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "route/@@route.id@@";
+	d2rq:class vocab:route;
+	d2rq:classDefinitionLabel "route";
+	.
+map:route__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property rdfs:label;
+	d2rq:pattern "route #@@route.id@@";
+	.
+map:route_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property vocab:route_id;
+	d2rq:propertyDefinitionLabel "route id";
+	d2rq:column "route.id";
+	d2rq:datatype xsd:integer;
+	.
+map:route_name_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property vocab:route_name_es;
+	d2rq:propertyDefinitionLabel "route name_es";
+	d2rq:column "route.name_es";
+	.
+map:route_name_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property vocab:route_name_eu;
+	d2rq:propertyDefinitionLabel "route name_eu";
+	d2rq:column "route.name_eu";
+	.
+map:route_name_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property vocab:route_name_en;
+	d2rq:propertyDefinitionLabel "route name_en";
+	d2rq:column "route.name_en";
+	.
+map:route_description_es a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property vocab:route_description_es;
+	d2rq:propertyDefinitionLabel "route description_es";
+	d2rq:column "route.description_es";
+	.
+map:route_description_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property vocab:route_description_en;
+	d2rq:propertyDefinitionLabel "route description_en";
+	d2rq:column "route.description_en";
+	.
+map:route_description_eu a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property vocab:route_description_eu;
+	d2rq:propertyDefinitionLabel "route description_eu";
+	d2rq:column "route.description_eu";
+	.
+map:route_route a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property vocab:route_route;
+	d2rq:propertyDefinitionLabel "route route";
+	d2rq:column "route.route";
+	.
+map:route_weather a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property vocab:route_weather;
+	d2rq:propertyDefinitionLabel "route weather";
+	d2rq:column "route.weather";
+	.
+map:route_note a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:route;
+	d2rq:property vocab:route_note;
+	d2rq:propertyDefinitionLabel "route note";
+	d2rq:column "route.note";
+	d2rq:datatype xsd:double;
+	.
+
+
