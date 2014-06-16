@@ -129,9 +129,21 @@ map:buildingClass a d2rq:PropertyBridge;
 	.
 map:emblematic_building_location_id__ref a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:emblematic_building;
-	d2rq:property geo:Feature;
+	d2rq:property geo:hasGeometry;
 	d2rq:refersToClassMap map:location;
 	d2rq:join "emblematic_building.location_id => location.id";
+	.
+map:emblematic_building_geoFeature a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property rdf:type;
+	d2rq:uriPattern "http://www.opengis.net/ont/geosparql#Feature";
+	.
+map:location_addressPrueba a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property xplore:address;
+	d2rq:propertyDefinitionLabel "location address";
+	d2rq:join "emblematic_building.location_id => location.id";
+	d2rq:column "location.address";
 	.
 
 
@@ -194,20 +206,6 @@ map:event_price a d2rq:PropertyBridge;
 	d2rq:propertyDefinitionLabel "event price";
 	d2rq:column "event.price";
 	.
-map:locationGeom a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event;
-	d2rq:property event:inSpace;
-	d2rq:join "event.id<=event_location.event_id";
-	d2rq:join "event_location.location_id => location.id";
-	d2rq:sqlExpression "ST_AsEWKT(location.geom)";
-	d2rq:datatype ogc:wktLiteral;
-	.
-map:locationDenom a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event;
-	d2rq:property event:atPlace;
-	d2rq:join "event.id<=event_location.event_id";
-	d2rq:column "event_location.denom";
-	.
 map:atTime a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
 	d2rq:property event:atTime;
@@ -218,18 +216,22 @@ map:circa a d2rq:PropertyBridge;
 	d2rq:property event:circa;
 	d2rq:pattern "@@event.startdate@@/@@event.endate@@";
 	.
+map:event_location_prueba5 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property event:inSpace;
+	d2rq:refersToClassMap map:event_location;
+	d2rq:join "event.id => event_location.event_id";
+	.
+
+
 
 # Table event_location
 map:event_location a d2rq:ClassMap;
 	d2rq:dataStorage map:database;
-	d2rq:uriPattern "event_location/@@event_location.location_id@@/@@event_location.event_id@@";
+	d2rq:uriPattern "event_location/@@event_location.location_id@@/";
 	d2rq:class geo:Feature;
 	d2rq:classDefinitionLabel "event_location";
-	.
-map:event_location__label a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event_location;
-	d2rq:property rdfs:label;
-	d2rq:pattern "event_location #@@event_location.location_id@@/@@event_location.event_id@@";
+	d2rq:condition "event_location.denom IS NOT NULL";
 	.
 map:event_location_denom a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event_location;
@@ -237,25 +239,21 @@ map:event_location_denom a d2rq:PropertyBridge;
 	d2rq:propertyDefinitionLabel "event_location denom";
 	d2rq:column "event_location.denom";
 	.
-map:event_location_event_id__ref a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event_location;
-	d2rq:property vocab:event_location_event_id;
-	d2rq:refersToClassMap map:event;
-	d2rq:join "event_location.event_id => event.id";
-	.
-map:event_location_location_id__ref a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event_location;
-	d2rq:property vocab:event_location_location_id;
-	d2rq:refersToClassMap map:location;
-	d2rq:join "event_location.location_id => location.id";
-	.
-
 map:event_location_geometry_id__ref a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event_location;
 	d2rq:property geo:hasGeometry;
-	d2rq:refersToClassMap map:geometry;
+	d2rq:refersToClassMap map:location;
 	d2rq:join "event_location.location_id => location.id";
 .
+
+map:event_location_address a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_location;
+	d2rq:property xplore:address;
+	d2rq:join "event_location.location_id => location.id";
+	d2rq:column "location.address"
+
+.
+
 
 
 
@@ -353,7 +351,7 @@ map:hostelery_email a d2rq:PropertyBridge;
 	.
 map:hostelery_location_id__ref a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
-	d2rq:property vocab:hostelery_location_id;
+	d2rq:property geo:hasGeometry;
 	d2rq:refersToClassMap map:location;
 	d2rq:join "hostelery.location_id => location.id";
 	.
@@ -368,6 +366,18 @@ map:hostelery_category a d2rq:PropertyBridge;
 	d2rq:property xplore:category;
 	d2rq:join "hostelery.hostelery_type => hostelery_type.id";
 	d2rq:column "hostelery_type.first_type_en";
+	.
+map:hostelery_geoFeature a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property rdf:type;
+	d2rq:uriPattern "http://www.opengis.net/ont/geosparql#Feature";
+	.
+map:location_address_hostelery a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property xplore:address;
+	d2rq:propertyDefinitionLabel "location address";
+	d2rq:join "hostelery.location_id => location.id";
+	d2rq:column "location.address";
 	.
 
 # Table hostelery_comments
@@ -407,35 +417,15 @@ map:hostelery_comments_hostelery_id__ref a d2rq:PropertyBridge;
 map:location a d2rq:ClassMap;
 	d2rq:dataStorage map:database;
 	d2rq:uriPattern "location/@@location.id@@";
-	d2rq:class geo:feature;
-	d2rq:classDefinitionLabel "location";
-	.
-map:location_address a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:location;
-	d2rq:property vocab:location_address;
-	d2rq:propertyDefinitionLabel "location address";
-	d2rq:column "location.address";
-	.
-map:location_geometry_id__ref a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:location;
-	d2rq:property geo:hasGeometry;
-	d2rq:refersToClassMap map:geometry;
-	.
-
-
-#Table geometry
-map:geometry a d2rq:ClassMap;
-	d2rq:dataStorage map:database;
-	d2rq:uriPattern "geometry/@@location.id@@";
+	d2rq:class geo:geometry;
 	d2rq:classDefinitionLabel "location";
 	.
 map:location_geom a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:geometry;
-	d2rq:property geo:Geometry;
+	d2rq:belongsToClassMap map:location;
+	d2rq:property geo:asWKT;
 	d2rq:sqlExpression "ST_AsEWKT(location.geom)";
 	d2rq:datatype ogc:wktLiteral;
 	.
-
 
 
 # Table route
