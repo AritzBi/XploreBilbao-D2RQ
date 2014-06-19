@@ -8,11 +8,28 @@
 @prefix jdbc: <http://d2rq.org/terms/jdbc/> .
 @prefix event: <http://linkedevents.org/ontology/>.
 @prefix sioc: <http://rdfs.org/sioc/spec/>.
-@prefix ogc: <http://www.opengis.net/ont/geosparql#> .
 @prefix xplore: <http://morelab.deusto.es/ontologies/exploreBilbao#>.
 @prefix geo: <http://www.opengis.net/ont/geosparql#>.
 @prefix gn: <http://www.geonames.org/ontology#>.
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix foaf: <http://xmlns.com/foaf/spec/>.
+@prefix meta: <http://www4.wiwiss.fu-berlin.de/bizer/d2r-server/metadata#> .
 
+<> a d2r:Server;
+  rdfs:label "My D2R Server";
+  d2r:baseURI <http://localhost:2020/>;
+  d2r:port 2020;
+  d2r:vocabularyIncludeInstances true;
+  
+  d2r:sparqlTimeout 300;
+  d2r:pageTimeout 5;
+
+  meta:datasetTitle "My dataset" ;
+  meta:datasetDescription "My dataset contains many nice resources." ;
+  meta:datasetSource "This other dataset" ;
+  d2r:limitPerClassMap false;
+  d2r:limitPerPropertyBridge false;
+  .
 
 map:database a d2rq:Database;
 	d2rq:jdbcDriver "org.postgresql.Driver";
@@ -26,11 +43,6 @@ map:building_comments a d2rq:ClassMap;
 	d2rq:dataStorage map:database;
 	d2rq:uriPattern "building_comments/@@building_comments.id@@";
 	d2rq:class sioc:Post;
-	.
-map:building_comments__label a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:building_comments;
-	d2rq:property rdfs:label;
-	d2rq:pattern "building_comments #@@building_comments.id@@";
 	.
 map:building_comments_comment a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:building_comments;
@@ -46,7 +58,7 @@ map:building_comments_note a d2rq:PropertyBridge;
 	.
 map:building_comments_building_id__ref a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:building_comments;
-	d2rq:property vocab:building_comments_building_id;
+	d2rq:property sioc:has_container;
 	d2rq:refersToClassMap map:emblematic_building;
 	d2rq:join "building_comments.building_id => emblematic_building.id";
 	.
@@ -102,21 +114,21 @@ map:emblematic_building_description_en a d2rq:PropertyBridge;
 	.
 map:emblematic_building_information_url a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:emblematic_building;
-	d2rq:property xplore:information_url;
+	d2rq:property foaf:homepage;
 	d2rq:lang "es";
 	d2rq:propertyDefinitionLabel "emblematic_building information_url";
 	d2rq:column "emblematic_building.information_url";
 	.
 map:emblematic_building_information_url_en a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:emblematic_building;
-	d2rq:property xplore:information_url;
+	d2rq:property foaf:homepage;
 	d2rq:lang "en";
 	d2rq:propertyDefinitionLabel "emblematic_building information_url_en";
 	d2rq:column "emblematic_building.information_url_en";
 	.
 map:emblematic_building_information_url_eu a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:emblematic_building;
-	d2rq:property xplore:information_url;
+	d2rq:property foaf:homepage;
 	d2rq:lang "eu";
 	d2rq:propertyDefinitionLabel "emblematic_building information_url_eu";
 	d2rq:column "emblematic_building.information_url_eu";
@@ -152,11 +164,6 @@ map:event a d2rq:ClassMap;
 	d2rq:dataStorage map:database;
 	d2rq:uriPattern "event/@@event.id@@";
 	d2rq:class event:Event;
-	.
-map:event__label a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event;
-	d2rq:property rdfs:label;
-	d2rq:pattern "event #@@event.id@@";
 	.
 map:event_title_es a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
@@ -196,13 +203,13 @@ map:event_more_information_eu a d2rq:PropertyBridge;
 	.
 map:event_information_url a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
-	d2rq:property vocab:event_information_url;
+	d2rq:property foaf:homepage;
 	d2rq:propertyDefinitionLabel "event information_url";
 	d2rq:column "event.information_url";
 	.
 map:event_price a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
-	d2rq:property vocab:event_price;
+	d2rq:property xplore:price;
 	d2rq:propertyDefinitionLabel "event price";
 	d2rq:column "event.price";
 	.
@@ -253,15 +260,6 @@ map:event_location_address a d2rq:PropertyBridge;
 	d2rq:column "location.address"
 
 .
-
-
-
-
-
-
-
-
-
 # Table hostelery
 map:hostelery a d2rq:ClassMap;
 	d2rq:dataStorage map:database;
@@ -333,19 +331,19 @@ map:hostelery_timetable_eu a d2rq:PropertyBridge;
 	.
 map:hostelery_information_url a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
-	d2rq:property xplore:information_url;
+	d2rq:property foaf:homepage;
 	d2rq:propertyDefinitionLabel "hostelery information_url";
 	d2rq:column "hostelery.information_url";
 	.
 map:hostelery_telephone a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
-	d2rq:property vocab:hostelery_telephone;
+	d2rq:property foaf:phone;
 	d2rq:propertyDefinitionLabel "hostelery telephone";
 	d2rq:column "hostelery.telephone";
 	.
 map:hostelery_email a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
-	d2rq:property vocab:hostelery_email;
+	d2rq:property foaf:mbox;
 	d2rq:propertyDefinitionLabel "hostelery email";
 	d2rq:column "hostelery.email";
 	.
@@ -363,7 +361,7 @@ map:hosteleryClass a d2rq:PropertyBridge;
 	.
 map:hostelery_category a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
-	d2rq:property xplore:category;
+	d2rq:property xplore:hostelryCategory;
 	d2rq:join "hostelery.hostelery_type => hostelery_type.id";
 	d2rq:column "hostelery_type.first_type_en";
 	.
@@ -386,11 +384,6 @@ map:hostelery_comments a d2rq:ClassMap;
 	d2rq:uriPattern "hostelery_comments/@@hostelery_comments.id@@";
 	d2rq:class sioc:Post;
 	.
-map:hostelery_comments__label a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:hostelery_comments;
-	d2rq:property rdfs:label;
-	d2rq:pattern "hostelery_comments #@@hostelery_comments.id@@";
-	.
 map:hostelery_comments_comment a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery_comments;
 	d2rq:property sioc:content;
@@ -406,7 +399,7 @@ map:hostelery_comments_note a d2rq:PropertyBridge;
 
 map:hostelery_comments_hostelery_id__ref a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery_comments;
-	d2rq:property vocab:hostelery_comments_hostelery_id;
+	d2rq:property sioc:has_container;
 	d2rq:refersToClassMap map:hostelery;
 	d2rq:join "hostelery_comments.hostelery_id => hostelery.id";
 	.
@@ -424,7 +417,7 @@ map:location_geom a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:location;
 	d2rq:property geo:asWKT;
 	d2rq:sqlExpression "ST_AsEWKT(location.geom)";
-	d2rq:datatype ogc:wktLiteral;
+	d2rq:datatype geo:wktLiteral;
 	.
 
 
