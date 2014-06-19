@@ -229,7 +229,20 @@ map:event_location_prueba5 a d2rq:PropertyBridge;
 	d2rq:refersToClassMap map:event_location;
 	d2rq:join "event.id => event_location.event_id";
 	.
+map:eventClass a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property rdf:type;
+	d2rq:join "event.type_id<=event_subtype.id";
+	d2rq:join "event_subtype.type_id<=event_type.id";
+	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@event_type.type_en|urlify@@";
+.
 
+map:eventSubClass a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property rdf:type;
+	d2rq:join "event.type_id<=event_subtype.id";
+	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@event_subtype.subtype_en|urlify@@";
+.
 
 
 # Table event_location
