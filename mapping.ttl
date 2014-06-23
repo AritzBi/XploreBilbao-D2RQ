@@ -7,13 +7,14 @@
 @prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
 @prefix jdbc: <http://d2rq.org/terms/jdbc/> .
 @prefix event: <http://linkedevents.org/ontology/>.
-@prefix sioc: <http://rdfs.org/sioc/spec/>.
 @prefix xplore: <http://morelab.deusto.es/ontologies/exploreBilbao#>.
 @prefix geo: <http://www.opengis.net/ont/geosparql#>.
 @prefix gn: <http://www.geonames.org/ontology#>.
 @prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
 @prefix foaf: <http://xmlns.com/foaf/spec/>.
 @prefix meta: <http://www4.wiwiss.fu-berlin.de/bizer/d2r-server/metadata#> .
+@prefix rev: <http://purl.org/stuff/rev#>.
+@prefix owltime: <http://www.w3.org/2006/time#>.
 
 <> a d2r:Server;
   rdfs:label "My D2R Server";
@@ -42,26 +43,21 @@ map:database a d2rq:Database;
 map:building_comments a d2rq:ClassMap;
 	d2rq:dataStorage map:database;
 	d2rq:uriPattern "building_comments/@@building_comments.id@@";
-	d2rq:class sioc:Post;
+	d2rq:class rev:Review;
 	.
 map:building_comments_comment a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:building_comments;
-	d2rq:property sioc:content;
+	d2rq:property rev:text;
 	d2rq:column "building_comments.comment";
 	.
 map:building_comments_note a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:building_comments;
-	d2rq:property xplore:note;
+	d2rq:property rev:rating;
 	d2rq:propertyDefinitionLabel "building_comments note";
 	d2rq:column "building_comments.note";
 	d2rq:datatype xsd:double;
 	.
-map:building_comments_building_id__ref a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:building_comments;
-	d2rq:property sioc:has_container;
-	d2rq:refersToClassMap map:emblematic_building;
-	d2rq:join "building_comments.building_id => emblematic_building.id";
-	.
+
 
 
 
@@ -115,23 +111,8 @@ map:emblematic_building_description_en a d2rq:PropertyBridge;
 map:emblematic_building_information_url a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:emblematic_building;
 	d2rq:property foaf:homepage;
-	d2rq:lang "es";
 	d2rq:propertyDefinitionLabel "emblematic_building information_url";
-	d2rq:column "emblematic_building.information_url";
-	.
-map:emblematic_building_information_url_en a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:emblematic_building;
-	d2rq:property foaf:homepage;
-	d2rq:lang "en";
-	d2rq:propertyDefinitionLabel "emblematic_building information_url_en";
-	d2rq:column "emblematic_building.information_url_en";
-	.
-map:emblematic_building_information_url_eu a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:emblematic_building;
-	d2rq:property foaf:homepage;
-	d2rq:lang "eu";
-	d2rq:propertyDefinitionLabel "emblematic_building information_url_eu";
-	d2rq:column "emblematic_building.information_url_eu";
+	d2rq:uriColumn "emblematic_building.information_url";
 	.
 map:buildingClass a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:emblematic_building;
@@ -156,6 +137,13 @@ map:location_addressPrueba a d2rq:PropertyBridge;
 	d2rq:propertyDefinitionLabel "location address";
 	d2rq:join "emblematic_building.location_id => location.id";
 	d2rq:column "location.address";
+	.
+map:comments a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property rev:hasReview;
+	d2rq:propertyDefinitionLabel "review";
+	d2rq:refersToClassMap map:building_comments;
+	d2rq:join "emblematic_building.id=>building_comments.building_id";
 	.
 
 
@@ -185,43 +173,27 @@ map:event_title_eu a d2rq:PropertyBridge;
 	.
 map:event_more_information_es a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
-	d2rq:property sioc:content;
+	d2rq:property xplore:description;
 	d2rq:lang "es";
-	d2rq:column "event.more_information_es";
+	d2rq:column "event.description_es";
 	.
 map:event_more_information_en a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
-	d2rq:property sioc:content;
+	d2rq:property xplore:description;
 	d2rq:lang "en";
-	d2rq:column "event.more_information_en";
+	d2rq:column "event.description_en";
 	.
 map:event_more_information_eu a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
-	d2rq:property sioc:content;
+	d2rq:property xplore:description;
 	d2rq:lang "eu";
-	d2rq:column "event.more_information_eu";
+	d2rq:column "event.description_eu";
 	.
 map:event_information_url a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
 	d2rq:property foaf:homepage;
 	d2rq:propertyDefinitionLabel "event information_url";
-	d2rq:column "event.information_url";
-	.
-map:event_price a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event;
-	d2rq:property xplore:price;
-	d2rq:propertyDefinitionLabel "event price";
-	d2rq:column "event.price";
-	.
-map:atTime a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event;
-	d2rq:property event:atTime;
-	d2rq:pattern "@@event.starthour@@-@@event.endhour@@";
-	.
-map:circa a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:event;
-	d2rq:property event:circa;
-	d2rq:pattern "@@event.startdate@@/@@event.endate@@";
+	d2rq:uriColumn "event.information_url";
 	.
 map:event_location_prueba5 a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
@@ -243,6 +215,21 @@ map:eventSubClass a d2rq:PropertyBridge;
 	d2rq:join "event.type_id<=event_subtype.id";
 	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@event_subtype.subtype_en|urlify@@";
 .
+map:minPrice a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property xplore:minPrice;
+	d2rq:column "event.lowprice";
+.
+map:maxPrice a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property xplore:maxPrice;
+	d2rq:column "event.highprice";
+.
+map:event_time_relation a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property event:circa;
+	d2rq:refersToClassMap map:event_time;
+	.
 
 
 # Table event_location
@@ -346,7 +333,7 @@ map:hostelery_information_url a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
 	d2rq:property foaf:homepage;
 	d2rq:propertyDefinitionLabel "hostelery information_url";
-	d2rq:column "hostelery.information_url";
+	d2rq:uriColumn "hostelery.information_url";
 	.
 map:hostelery_telephone a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
@@ -390,32 +377,32 @@ map:location_address_hostelery a d2rq:PropertyBridge;
 	d2rq:join "hostelery.location_id => location.id";
 	d2rq:column "location.address";
 	.
-
+map:hostelry_comments a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property rev:hasReview;
+	d2rq:propertyDefinitionLabel "review";
+	d2rq:refersToClassMap map:hostelery_comments;
+	d2rq:join "hostelery.id=>hostelery_comments.hostelery_id";
+	.
 # Table hostelery_comments
 map:hostelery_comments a d2rq:ClassMap;
 	d2rq:dataStorage map:database;
 	d2rq:uriPattern "hostelery_comments/@@hostelery_comments.id@@";
-	d2rq:class sioc:Post;
+	d2rq:class rev:Review;
 	.
 map:hostelery_comments_comment a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery_comments;
-	d2rq:property sioc:content;
+	d2rq:property rev:text;
 	d2rq:column "hostelery_comments.comment";
 	.
 map:hostelery_comments_note a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery_comments;
-	d2rq:property xplore:note;
+	d2rq:property rev:rating;
 	d2rq:propertyDefinitionLabel "hostelery_comments note";
 	d2rq:column "hostelery_comments.note";
 	d2rq:datatype xsd:double;
 	.
 
-map:hostelery_comments_hostelery_id__ref a d2rq:PropertyBridge;
-	d2rq:belongsToClassMap map:hostelery_comments;
-	d2rq:property sioc:has_container;
-	d2rq:refersToClassMap map:hostelery;
-	d2rq:join "hostelery_comments.hostelery_id => hostelery.id";
-	.
 
 
 
@@ -431,6 +418,27 @@ map:location_geom a d2rq:PropertyBridge;
 	d2rq:property geo:asWKT;
 	d2rq:sqlExpression "ST_AsEWKT(location.geom)";
 	d2rq:datatype geo:wktLiteral;
+	.
+
+
+# Table event_time
+map:event_time a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "event_time/@@event.id@@";
+	d2rq:class owltime:DateTimeInterval;
+	d2rq:classDefinitionLabel "event_time";
+	.
+map:datetime_start a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_time;
+	d2rq:property owltime:intervalStarts;
+	d2rq:pattern "@@event.startdate@@";
+	d2rq:datatype xsd:Datetime;
+	.
+map:datetime_end a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event_time;
+	d2rq:property owltime:intervalFinishes;
+	d2rq:pattern "@@event.endate@@";
+	d2rq:datatype xsd:Datetime;
 	.
 
 
