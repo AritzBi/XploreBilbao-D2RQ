@@ -120,6 +120,11 @@ map:buildingClass a d2rq:PropertyBridge;
 	d2rq:join "emblematic_building.building_type<=building_type.id";
 	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@building_type.type_denom_en|urlify@@";
 	.
+map:emblematicBuildingClass a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:emblematic_building;
+	d2rq:property rdf:type;
+	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#EmblematicBuilding";
+	.
 map:emblematic_building_location_id__ref a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:emblematic_building;
 	d2rq:property geo:hasGeometry;
@@ -358,6 +363,12 @@ map:hosteleryClass a d2rq:PropertyBridge;
 	d2rq:property rdf:type;
 	d2rq:join "hostelery.hostelery_type => hostelery_type.id";
 	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@hostelery_type.second_type_en|urlify@@";
+	.
+map:hostelerySubClass a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:hostelery;
+	d2rq:property rdf:type;
+	d2rq:join "hostelery.hostelery_type => hostelery_type.id";
+	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@hostelery_type.first_type_en|urlify@@";
 	.
 map:hostelery_category a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
