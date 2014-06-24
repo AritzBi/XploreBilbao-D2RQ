@@ -230,6 +230,16 @@ map:maxPrice a d2rq:PropertyBridge;
 	d2rq:property xplore:maxPrice;
 	d2rq:column "event.highprice";
 .
+map:startHour a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property xplore:startHour;
+	d2rq:column "event.starthour";
+.
+map:endHour a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:event;
+	d2rq:property xplore:endHour;
+	d2rq:column "event.endhour";
+.
 map:event_time_relation a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
 	d2rq:property event:circa;
