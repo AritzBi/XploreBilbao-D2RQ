@@ -7,7 +7,7 @@
 @prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
 @prefix jdbc: <http://d2rq.org/terms/jdbc/> .
 @prefix event: <http://linkedevents.org/ontology/>.
-@prefix xplore: <http://morelab.deusto.es/ontologies/exploreBilbao#>.
+@prefix xplore: <http://morelab.deusto.es/ontologies/xpb#>.
 @prefix geo: <http://www.opengis.net/ont/geosparql#>.
 @prefix gn: <http://www.geonames.org/ontology#>.
 @prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
@@ -18,10 +18,9 @@
 
 <> a d2r:Server;
   rdfs:label "My D2R Server";
-  d2r:baseURI <http://localhost:2020/>;
+  d2r:baseURI <http://62.99.36.108:2020/>;
   d2r:port 2020;
   d2r:vocabularyIncludeInstances true;
-  
   d2r:sparqlTimeout 300;
   d2r:pageTimeout 5;
 
@@ -118,12 +117,12 @@ map:buildingClass a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:emblematic_building;
 	d2rq:property rdf:type;
 	d2rq:join "emblematic_building.building_type<=building_type.id";
-	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@building_type.type_denom_en|urlify@@";
+	d2rq:uriPattern "http://morelab.deusto.es/ontologies/xpb#@@building_type.type_denom_en|urlify@@";
 	.
 map:emblematicBuildingClass a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:emblematic_building;
 	d2rq:property rdf:type;
-	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#EmblematicBuilding";
+	d2rq:uriPattern "http://morelab.deusto.es/ontologies/xpb#EmblematicBuilding";
 	.
 map:emblematic_building_location_id__ref a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:emblematic_building;
@@ -211,14 +210,14 @@ map:eventClass a d2rq:PropertyBridge;
 	d2rq:property rdf:type;
 	d2rq:join "event.type_id<=event_subtype.id";
 	d2rq:join "event_subtype.type_id<=event_type.id";
-	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@event_type.type_en|urlify@@";
+	d2rq:uriPattern "http://morelab.deusto.es/ontologies/xpb#@@event_type.type_en|urlify@@";
 .
 
 map:eventSubClass a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
 	d2rq:property rdf:type;
 	d2rq:join "event.type_id<=event_subtype.id";
-	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@event_subtype.subtype_en|urlify@@";
+	d2rq:uriPattern "http://morelab.deusto.es/ontologies/xpb#@@event_subtype.subtype_en|urlify@@";
 .
 map:minPrice a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:event;
@@ -372,13 +371,13 @@ map:hosteleryClass a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
 	d2rq:property rdf:type;
 	d2rq:join "hostelery.hostelery_type => hostelery_type.id";
-	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@hostelery_type.second_type_en|urlify@@";
+	d2rq:uriPattern "http://morelab.deusto.es/ontologies/xpb#@@hostelery_type.second_type_en|urlify@@";
 	.
 map:hostelerySubClass a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
 	d2rq:property rdf:type;
 	d2rq:join "hostelery.hostelery_type => hostelery_type.id";
-	d2rq:uriPattern "http://morelab.deusto.es/ontologies/exploreBilbao#@@hostelery_type.first_type_en|urlify@@";
+	d2rq:uriPattern "http://morelab.deusto.es/ontologies/xpb#@@hostelery_type.first_type_en|urlify@@";
 	.
 map:hostelery_category a d2rq:PropertyBridge;
 	d2rq:belongsToClassMap map:hostelery;
